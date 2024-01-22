@@ -7,6 +7,8 @@ use App\Http\Controllers\frontend\AddProductController;
 use App\Http\Controllers\frontend\EditProductController;
 use App\Http\Controllers\frontend\LoginController;
 use App\Http\Controllers\frontend\ProductsController;
+use App\Http\Controllers\UpdateInfoController;
+use App\Http\Controllers\AdditionalInfoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,3 +30,5 @@ Route::get('/add-product',[AddProductController::class, 'index']);
 Route::get('/edit-product',[EditProductController::class, 'index']);
 Route::get('/login',[LoginController::class, 'index']);
 Route::get('/products',[ProductsController::class, 'index']);
+Route::get('/get-update-info', [UpdateInfoController::class, 'getUpdateInfo']);
+Route::get('/get-additional-info', [AdditionalInfoController::class, 'getAdditionalInfo']);
