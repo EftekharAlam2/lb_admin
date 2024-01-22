@@ -3,31 +3,30 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Models\UpdateInfo;
 
 class UpdateInfoController extends Controller
 {
-    public function edit()
-    {
-        // $updateInfo = UpdateInfo::latest()->first(); 
-        $updateInfo = UpdateInfo::first();
-
-        return view('frontend.update_info.edit', compact('updateInfo'));
-    }
-
     public function update(Request $request)
     {
         $request->validate([
-            'availability' => 'required', 'string',
-        'my_info' => 'required', 'string',
+            'availability' => 'required' ,'string',
+            'myInfo' => 'required', 'string',
         ]);
 
-        UpdateInfo::latest()->update([
-            'availability' => $request->input('availability'),
-            'my_info' => $request->input('myInfo'),
-        ]);
+        try {
+            $updateInfo = UpdateInfo::firstOrFail();
+            $updateInfo->update([
+                'availability' => $request->input('availability'),
+                'my_info' => $request->input('myInfo'),
+            ]);
 
-        return redirect()->back()->with('success', 'Information updated successfully.');
+            return response()->json(['success' => 'Information updated successfully.']);
+        } catch (\Exception $e) {
+            Log::error('Error in updateInfo: ' . $e->getMessage());
+            return response()->json(['error' => 'Internal Server Error'], 500);
+        }
     }
 
     public function getUpdateInfo()

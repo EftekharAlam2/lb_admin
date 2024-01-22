@@ -31,4 +31,6 @@ Route::get('/edit-product',[EditProductController::class, 'index']);
 Route::get('/login',[LoginController::class, 'index']);
 Route::get('/products',[ProductsController::class, 'index']);
 Route::get('/get-update-info', [UpdateInfoController::class, 'getUpdateInfo']);
+Route::post('/update-info', [UpdateInfoController::class, 'update']);
 Route::get('/get-additional-info', [AdditionalInfoController::class, 'getAdditionalInfo']);
+Route::post('/additional-information', [AdditionalInfoController::class, 'update']);
