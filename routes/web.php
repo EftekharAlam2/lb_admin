@@ -9,6 +9,7 @@ use App\Http\Controllers\frontend\LoginController;
 use App\Http\Controllers\frontend\ProductsController;
 use App\Http\Controllers\UpdateInfoController;
 use App\Http\Controllers\AdditionalInfoController;
+use App\Http\Controllers\ProjectsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,3 +35,9 @@ Route::get('/get-update-info', [UpdateInfoController::class, 'getUpdateInfo']);
 Route::post('/update-info', [UpdateInfoController::class, 'update']);
 Route::get('/get-additional-info', [AdditionalInfoController::class, 'getAdditionalInfo']);
 Route::post('/additional-information', [AdditionalInfoController::class, 'update']);
+
+Route::get('/products', [ProjectsController::class, 'index']);
+Route::post('/add-project', [ProjectsController::class, 'store']);
+Route::delete('/delete-project/{id}', [ProjectsController::class, 'destroy']);
+Route::get('/get-project-details/{id}', [ProjectsController::class, 'getProjectDetails']);
+Route::post('/update-project', [ProjectsController::class, 'updateProject']);
