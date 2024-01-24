@@ -12,7 +12,43 @@ class ProjectsController extends Controller
     public function index()
     {
         $projects = Project::all();
-        return view('frontend.products', compact('projects'));
+
+        $apiUrl = 'http://universities.hipolabs.com/search?country=United+States';
+        $response = Http::get($apiUrl);
+        $apiData = $response->json();
+
+        $apiUrl2 = 'https://api.restful-api.dev/objects';
+        $response2 = Http::get($apiUrl2);
+        $apiData2 = $response2->json();
+
+        return view('frontend.products', compact('projects','apiData', 'apiData2'));
+    }
+
+    public function postObjectToApi(Request $request)
+    {
+        $request->validate([
+            'object_name' => 'required', 'string',
+            'object_color' => 'string',
+            'object_capacity' => 'string',
+        ]);
+
+        $postData = [
+            'name' => $request->input('object_name'),
+            'data' => [
+                'color' => $request->input('object_color'),
+                'capacity' => $request->input('object_capacity'),
+            ],
+        ];
+
+        $apiUrl = 'https://api.restful-api.dev/objects';
+        $response = Http::post($apiUrl, $postData);
+
+        if ($response->successful()) {
+            // return redirect()->back()->with('success', 'Object added successfully.');
+            return response()->json(['message' => 'Object posted successfully to the API']);
+        } else {
+            return response()->json(['error' => 'Failed to post object to the API'], $response->status());
+        }
     }
 
     public function store(Request $request)
@@ -105,19 +141,5 @@ class ProjectsController extends Controller
 
         $project->delete();
         return response()->json(['success' => 'Project deleted successfully.']);
-    }
-
-    public function fetchAndInsertData()
-    {
-        $apiUrl = 'http://universities.hipolabs.com/search?country=United+States';
-        $response = Http::get($apiUrl);
-
-        if ($response->successful()) {
-            $apiData = $response->json();
-
-            return view('frontend.products', compact('apiData'));
-        } else {
-            return response()->json(['error' => 'Failed to fetch data from the API'], $response->status());
-        }
     }
 }

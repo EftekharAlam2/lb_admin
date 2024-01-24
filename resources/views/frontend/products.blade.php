@@ -30,6 +30,79 @@
     </tbody>
   </table>
 
+  <div class="container mt-5">
+    <h2 class="text-white mb-4">Phone List</h2>
+
+    <table class="table table-bordered mt-5" id="myObjectTable">
+        <thead>
+            <tr>
+                <th>Phone Name</th>
+                <th>Color</th>
+                <th>Capacity</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($apiData2 as $data)
+            <tr>
+                <td>{{ $data['name'] }}</td>
+                <td>{{ isset($data['data']['color']) ? $data['data']['color'] : 'N/A' }}</td>
+                <td>{{ isset($data['data']['capacity']) ? $data['data']['capacity'] : 'N/A' }}</td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+
+  <div class="container mt-5">
+    <h2 class="text-white mt-5 mb-4">Add a new object:</h2>
+    <form action="{{ url('/add-object') }}" method="post">
+        @csrf
+
+        <div class="form-group">
+            <label for="object_name">Object Name</label>
+            <input type="text" class="form-control" id="object_name" name="object_name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="object_color">Object Color</label>
+            <input type="text" class="form-control" id="object_color" name="object_color">
+        </div>
+
+        <div class="form-group">
+            <label for="object_capacity">Object Capacity</label>
+            <input type="text" class="form-control" id="object_capacity" name="object_capacity">
+        </div>
+
+        <button type="submit" class="btn btn-warning mt-4 text-white">Add Object</button>
+    </form>
+</div>
+
+  <table class="table table-bordered mt-5" id="table">
+    <thead>
+      <tr>
+        <th>University Name</th>
+        <th>Country</th>
+        <th>Link</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>  
+        @foreach($projects as $project)
+        <tr>
+          <td>{{ $project->project_category }}</td>
+          <td>{{ $project->project_name }}</td>
+          <td>
+            <img src="data:image/png;base64,{{ $project->project_image }}" alt="Project Image" class="img-thumbnail" style="max-width: 100px; max-height: 100px;">
+          </td>
+          <td>
+            <!-- <button class="btn btn-success btn-sm" onclick="openEditModal({{ $project->id }})">Edit</button> -->
+            <button class="btn btn-danger btn-sm" onclick="deleteProject({{ $project->id }})">Delete</button>
+          </td>
+        </tr>
+        @endforeach
+    </tbody>
+  </table>
+
   <div class="form-group">
     <h3 class="text-white mt-4 mb-4">Add a new project:</h3>
     <form action="{{ url('/add-project') }}" method="post" enctype="multipart/form-data">
@@ -84,6 +157,8 @@
 
 <script>
   let table = new DataTable('#myTable');
+  let table2 = new DataTable('#myObjectTable');
+  let table3 = new DataTable('#table');
 
 
   $.ajaxSetup({
