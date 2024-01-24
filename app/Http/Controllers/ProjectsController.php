@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Project;
+use Illuminate\Support\Facades\Http;
 
 class ProjectsController extends Controller
 {
@@ -104,5 +105,19 @@ class ProjectsController extends Controller
 
         $project->delete();
         return response()->json(['success' => 'Project deleted successfully.']);
+    }
+
+    public function fetchAndInsertData()
+    {
+        $apiUrl = 'http://universities.hipolabs.com/search?country=United+States';
+        $response = Http::get($apiUrl);
+
+        if ($response->successful()) {
+            $apiData = $response->json();
+
+            return view('frontend.products', compact('apiData'));
+        } else {
+            return response()->json(['error' => 'Failed to fetch data from the API'], $response->status());
+        }
     }
 }

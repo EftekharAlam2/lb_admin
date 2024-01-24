@@ -4,28 +4,28 @@
 <div class="container mt-5">
   <h2 class="text-white mb-4">Project List</h2>
 
-  <table class="table table-bordered">
+  <table class="table table-bordered" id="myTable">
     <thead>
       <tr>
-        <th>Project Category</th>
-        <th>Project Name</th>
-        <th>Project Image</th>
-        <th>Action</th>
+        <th>University Name</th>
+        <th>Country</th>
+        <th>Link</th>
+        <!-- <th>Action</th> -->
       </tr>
     </thead>
-    <tbody>
-      @foreach($projects as $project)
-        <tr>
-          <td>{{ $project->project_category }}</td>
-          <td>{{ $project->project_name }}</td>
-          <td>
-            <img src="data:image/png;base64,{{ $project->project_image }}" alt="Project Image" class="img-thumbnail" style="max-width: 100px; max-height: 100px;">
-          </td>
-          <td>
-            <!-- <button class="btn btn-success btn-sm" onclick="openEditModal({{ $project->id }})">Edit</button> -->
-            <button class="btn btn-danger btn-sm" onclick="deleteProject({{ $project->id }})">Delete</button>
-          </td>
-        </tr>
+    <tbody>  
+        @foreach($apiData as $university)
+            <tr>
+                <td>{{ $university['name'] }}</td>
+                <td>{{ $university['country'] }}</td>
+                <td>
+                    @if(isset($university['web_pages'][0]))
+                        <a href="{{ $university['web_pages'][0] }}" target="_blank">{{ $university['web_pages'][0] }}</a>
+                    @else
+                        N/A
+                    @endif
+                </td>
+            </tr>
         @endforeach
     </tbody>
   </table>
@@ -79,8 +79,13 @@
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 
 <script>
+  let table = new DataTable('#myTable');
+
+
   $.ajaxSetup({
     headers: {
       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

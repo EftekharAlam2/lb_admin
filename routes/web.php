@@ -37,6 +37,7 @@ Route::get('/get-additional-info', [AdditionalInfoController::class, 'getAdditio
 Route::post('/additional-information', [AdditionalInfoController::class, 'update']);
 
 Route::get('/products', [ProjectsController::class, 'index']);
+Route::get('/products', [ProjectsController::class, 'fetchAndInsertData']);
 Route::post('/add-project', [ProjectsController::class, 'store']);
 Route::delete('/delete-project/{id}', [ProjectsController::class, 'destroy']);
 Route::get('/get-project-details/{id}', [ProjectsController::class, 'getProjectDetails']);
